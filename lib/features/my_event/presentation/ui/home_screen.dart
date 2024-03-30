@@ -1,6 +1,5 @@
 // import 'package:dio/dio.dart';
 // import 'package:diplome/di/service.dart';
-import 'dart:ffi';
 
 import 'package:diplome/features/my_event/data/model/event_model.dart';
 import 'package:diplome/features/my_event/presentation/widget/custom_bot_nav_bar.dart';

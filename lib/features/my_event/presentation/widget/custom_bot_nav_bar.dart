@@ -1,5 +1,3 @@
-import 'package:diplome/features/my_event/data/model/event_model.dart';
-import 'package:diplome/features/my_event/presentation/ui/event_info_screen.dart';
 import 'package:diplome/features/my_event/presentation/ui/home_screen.dart';
 import 'package:flutter/material.dart';
 
