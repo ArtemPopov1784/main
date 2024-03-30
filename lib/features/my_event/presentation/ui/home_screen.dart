@@ -25,7 +25,9 @@ class _HomeState extends State<Home> {
       final data = await mssqlConnection.getData("""
                                 SELECT * FROM Events WHERE Name_Events = '${searchController.text}'
                                 """);
-      print(data);
+      if (kDebugMode) {
+        print(data);
+      }
       // await service<Dio>()
       //     .get('cars?limit=50&model=${searchController.text}');
       return (data as List)
