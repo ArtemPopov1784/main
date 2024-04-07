@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:diplome/features/my_event/presentation/ui/home_screen.dart';
 import 'package:diplome/features/my_event/presentation/widget/show_error_dialog.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +26,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final _mailController = TextEditingController(text: "user@example.org");
   final _passwordController = TextEditingController(text: "87654321");
   final _phoneController = TextEditingController(text: "89987654321");
-  int _rolesId = 1; // Default role ID
-
-  // final _formKey = GlobalKey<FormState>();
+  int _rolesId = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +152,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 AND Mail = '${_mailController.text}' 
                                 AND Roles_ID = $_rolesId
                                 """);
-                              //print(query);
+                              clientID = jsonDecode(query)[0]['ID_Account'];
                               if (query != "[]") {
                                 Navigator.push(
                                   context,
@@ -160,14 +160,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     builder: (context) => const Home(),
                                   ),
                                 );
-                                // List<String> q = await mssqlConnection.getData("""
-                                // SELECT * FROM Account
-                                // """);
-                                // print(q[1]);
-                                //print("OK");
                               } else {
-                                //print(query);
-
                                 showErrorDialog(
                                     context, "Авторизация неудачна ☹");
                               }
@@ -198,11 +191,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                   '${_phoneController.text}', 
                                   '${_mailController.text}', 
                                   $_rolesId)""");
-                                //print("OK");
                               } catch (e) {
-                                //print(e);
                                 showErrorDialog(context, "Регистрация Faild ☹");
-                                // showErrorDialog(context, e.toString());
                               }
                             },
                             child: const Text(

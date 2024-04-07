@@ -1,30 +1,34 @@
-// ignore_for_file: non_constant_identifier_names
+import 'package:diplome/features/my_event/data/model/organisation_model.dart';
+import 'package:diplome/features/my_event/data/model/type_events_model.dart';
 
 class EventModel {
   EventModel({
-    required this.name_event,
-    required this.date_time,
+    required this.idEvents,
+    required this.nameEvents,
+    required this.dateTime,
     required this.location,
-    required this.type_events_ID,
-    required this.organisation_ID,
-    required this.client_ID,
+    required this.description,
+    required this.typeEventModel,
+    required this.organisationModel,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
     return EventModel(
-      name_event: json['Name_Events'],
-      date_time: json['DateTime'],
+      idEvents: json['ID_Events'],
+      nameEvents: json['Name_Events'],
+      dateTime: DateTime.parse(json['DateTime']),
       location: json['Location'],
-      type_events_ID: json['Type_Events_ID'],
-      organisation_ID: json['Organisation_ID'],
-      client_ID: json['Client_ID'],
+      description: json['Description'],
+      typeEventModel: TypeEventModel.fromJson(json['Type_Event']),
+      organisationModel: OrganisationModel.fromJson(json['Organisation']),
     );
   }
 
-  final DateTime date_time;
+  final DateTime dateTime;
+  final String description;
+  final int idEvents;
   final String location;
-  final String name_event;
-  final int client_ID;
-  final int organisation_ID;
-  final int type_events_ID;
+  final String nameEvents;
+  final OrganisationModel organisationModel;
+  final TypeEventModel typeEventModel;
 }

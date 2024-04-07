@@ -17,10 +17,10 @@ class _CustomBotNavBarState extends State<CustomBotNavBar> {
       child: BottomNavigationBar(
         currentIndex: id,
         onTap: (value) {
-          // print(value);
           id = value;
           switch (value) {
             case 0:
+              showOnlyMyEvents = false;
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -29,26 +29,14 @@ class _CustomBotNavBarState extends State<CustomBotNavBar> {
               );
               break;
             case 1:
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => EventInfoScreen(
-              //         car: EventModel(
-              //             city_mpg: 1,
-              //             car_class: "car_class",
-              //             combination_mpg: 1,
-              //             cylinders: 1,
-              //             displacement: 1,
-              //             drive: "drive",
-              //             fuel_type: "fuel_type",
-              //             highway_mpg: 1,
-              //             make: "make",
-              //             model: "model",
-              //             transmission: "transmission",
-              //             year: 1),
-              //         index: 0),
-              //   ),
-              // );
+              showOnlyMyEvents = true;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Home(),
+                ),
+              );
+
               break;
             default:
           }
