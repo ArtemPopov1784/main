@@ -11,6 +11,6 @@ class RoleModel {
     );
   }
 
-  final int idRoles;
+  late final int idRoles;
   final String nameRoles;
 }

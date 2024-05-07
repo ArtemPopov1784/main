@@ -20,5 +20,5 @@ class OrganisationModel {
   final AccountModel account;
   final int idOrganisation;
   final String nameOrganisation;
-  final double rating;
+  final int rating;
 }

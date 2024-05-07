@@ -15,7 +15,7 @@ class EventParticipantModel {
 
     return EventParticipantModel(
       idParticipant: json['ID_Participant'],
-      event: EventModel.fromJson(json['ID_Event']),
+      event: EventModel.fromJson(json['Event']),
       clients: clients,
     );
   }

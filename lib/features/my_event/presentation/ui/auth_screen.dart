@@ -1,13 +1,16 @@
+// Импорт необходимых библиотек
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-
+import 'package:diplome/features/my_event/data/model/roles_model.dart';
+import 'package:diplome/features/my_event/presentation/ui/admin_screen.dart';
 import 'package:diplome/features/my_event/presentation/ui/home_screen.dart';
 import 'package:diplome/features/my_event/presentation/widget/show_error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mssql_connection/mssql_connection.dart';
 
+// Определение класса AuthScreen, который является StatefulWidget
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -15,21 +18,57 @@ class AuthScreen extends StatefulWidget {
   State<AuthScreen> createState() => _AuthScreenState();
 }
 
+// Определение класса _AuthScreenState, который является State<AuthScreen>
 class _AuthScreenState extends State<AuthScreen> {
+  // Определение переменных для хранения состояния виджетов
   bool isPassHide = true;
+
   MssqlConnection mssqlConnection = MssqlConnection.getInstance();
 
-  final _addressController =
-      TextEditingController(text: "Moscow, st. Pushkina, 2");
+  // клиент
+  // final _addressController =
+  //     TextEditingController(text: "Moscow, st. Pushkina, 2");
+  // final _loginController = TextEditingController(text: "user");
+  // final _mailController = TextEditingController(text: "user@example.org");
+  // final _passwordController = TextEditingController(text: "87654321");
+  // final _phoneController = TextEditingController(text: "89987654321");
+  // int _rolesId = 1;
 
-  final _loginController = TextEditingController(text: "user");
-  final _mailController = TextEditingController(text: "user@example.org");
-  final _passwordController = TextEditingController(text: "87654321");
-  final _phoneController = TextEditingController(text: "89987654321");
-  int _rolesId = 1;
+  // admin
+  final _addressController = TextEditingController(text: "-");
+
+  final _loginController = TextEditingController(text: "admin");
+  final _mailController = TextEditingController(text: "admin@gmail.com");
+  final _passwordController = TextEditingController(text: "admin12345");
+  final _phoneController = TextEditingController(text: "88888888888");
+  List<RoleModel> _roles = [];
+  int _rolesId = 3;
+  RoleModel? _selectedRole;
 
   @override
+  void initState() {
+    super.initState();
+    _loadRoles();
+    setState(() {});
+  }
+
+  Future<void> _loadRoles() async {
+    String query =
+        await mssqlConnection.getData("SELECT ID_Roles, Name_Roles FROM Roles");
+    List<dynamic> rolesJson = jsonDecode(query);
+    setState(() {
+      _roles =
+          rolesJson.map<RoleModel>((role) => RoleModel.fromJson(role)).toList();
+      // _selectedRole = _roles.first;
+      _selectedRole = _roles[_rolesId - 1];
+      _rolesId = _selectedRole!.idRoles;
+    });
+  }
+
+  // Определение метода build, который строит виджет AuthScreen
+  @override
   Widget build(BuildContext context) {
+    // Определение виджетов, которые будут отображаться на экране
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -50,7 +89,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   child: Column(
                     // fields (oh shit)
                     children: [
-                      // Login field
+                      // Определение текстового поля для ввода логина
                       TextFormField(
                         decoration: const InputDecoration(label: Text("Логин")),
                         controller: _loginController,
@@ -61,7 +100,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           return null;
                         },
                       ),
-                      // Password field
+                      // Определение текстового поля для ввода пароля
                       TextFormField(
                         decoration: InputDecoration(
                             label: const Text("Пароль"),
@@ -80,12 +119,12 @@ class _AuthScreenState extends State<AuthScreen> {
                           return null;
                         },
                       ),
-                      // Address field
+                      // Определение текстового поля для ввода адреса
                       TextFormField(
                         decoration: const InputDecoration(label: Text("Адрес")),
                         controller: _addressController,
                       ),
-                      // Phone field
+                      // Определение текстового поля для ввода телефона
                       TextFormField(
                         decoration:
                             const InputDecoration(label: Text("Телефон")),
@@ -101,7 +140,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           return null;
                         },
                       ),
-                      // Mail field
+                      // Определение текстового поля для ввода email
                       TextFormField(
                         decoration: const InputDecoration(label: Text("Почта")),
                         controller: _mailController,
@@ -113,28 +152,32 @@ class _AuthScreenState extends State<AuthScreen> {
                           return null;
                         },
                       ),
-                      // Roles dropdown
-                      DropdownButtonFormField<int>(
+                      // Определение выпадающего списка для выбора роли
+
+                      DropdownButtonFormField<RoleModel>(
                         decoration: const InputDecoration(labelText: "Роль"),
-                        value: _rolesId,
-                        items: const [
-                          DropdownMenuItem<int>(
-                              value: 1, child: Text('Частник')),
-                          DropdownMenuItem<int>(
-                              value: 2, child: Text('Организация')),
-                        ],
+                        value: _selectedRole,
+                        items: _roles.map<DropdownMenuItem<RoleModel>>((role) {
+                          return DropdownMenuItem<RoleModel>(
+                            value: role,
+                            child: Text(role.nameRoles),
+                          );
+                        }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            _rolesId = value!;
+                            _rolesId = value!.idRoles;
+                            _selectedRole = value;
                           });
                         },
                       ),
+
                       Container(
                         height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          // Определение кнопки "Вход"
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               elevation: 2,
@@ -154,12 +197,28 @@ class _AuthScreenState extends State<AuthScreen> {
                                 """);
                               clientID = jsonDecode(query)[0]['ID_Account'];
                               if (query != "[]") {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Home(),
-                                  ),
-                                );
+                                switch (_rolesId) {
+                                  case 1:
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Home(),
+                                      ),
+                                    );
+                                    break;
+                                  case 2:
+                                    break;
+                                  case 3:
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AdminScreen(),
+                                      ),
+                                    );
+                                    break;
+                                  default:
+                                }
                               } else {
                                 showErrorDialog(
                                     context, "Авторизация неудачна ☹");
@@ -173,6 +232,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               ),
                             ),
                           ),
+                          // Определение кнопки "Регистрация"
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               elevation: 2,

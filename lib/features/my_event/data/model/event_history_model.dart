@@ -12,8 +12,8 @@ class EventsHistoryModel {
   factory EventsHistoryModel.fromJson(Map<String, dynamic> json) {
     return EventsHistoryModel(
       idEventsHistory: json['ID_Events_History'],
-      event: EventModel.fromJson(json['Events_ID']),
-      acocunt: AccountModel.fromJson(json['Account_ID']),
+      event: EventModel.fromJson(json['Events']),
+      acocunt: AccountModel.fromJson(json['Account']),
       visitDate: DateTime.parse(json['Visit_Date']),
     );
   }

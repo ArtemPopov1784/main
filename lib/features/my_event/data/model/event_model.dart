@@ -16,15 +16,15 @@ class EventModel {
     return EventModel(
       idEvents: json['ID_Events'],
       nameEvents: json['Name_Events'],
-      dateTime: DateTime.parse(json['DateTime']),
+      dateTime: json['DateTime'],
       location: json['Location'],
       description: json['Description'],
-      typeEventModel: TypeEventModel.fromJson(json['Type_Event']),
+      typeEventModel: TypeEventModel.fromJson(json['Type_Events']),
       organisationModel: OrganisationModel.fromJson(json['Organisation']),
     );
   }
 
-  final DateTime dateTime;
+  final String dateTime;
   final String description;
   final int idEvents;
   final String location;

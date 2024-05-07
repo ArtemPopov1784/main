@@ -11,6 +11,9 @@ import 'package:diplome/features/my_event/presentation/ui/home_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mssql_connection/mssql_connection.dart';
 
+///
+///Инициализация мероприятий (может вывести как все, так и только те, которые нужны)
+///
 Future<List<EventParticipantModel>> eventInit() async {
   MssqlConnection mssqlConnection = MssqlConnection.getInstance();
 
@@ -45,9 +48,7 @@ WHERE
      1 = 1)
 ORDER BY
     E.ID_Events,
-    C.ID_Client;
-
-    
+    C.ID_Client;    
 """),
     ) as List<dynamic>;
     List<EventParticipantModel> events = [];
@@ -60,7 +61,7 @@ ORDER BY
       EventModel event = EventModel(
         idEvents: eventId,
         nameEvents: json['Name_Events'] ?? "",
-        dateTime: DateTime.tryParse(json['DateTime'] ?? "") ?? DateTime.now(),
+        dateTime: json['DateTime'] ?? "",
         location: json['Location'] ?? "",
         description: json['Description'] ?? "",
         typeEventModel: TypeEventModel(
@@ -69,7 +70,7 @@ ORDER BY
         organisationModel: OrganisationModel(
           idOrganisation: json['ID_Organisation'] ?? 0,
           nameOrganisation: json['Name_Organisation'] ?? "",
-          rating: json['Rating'] ?? 0.0,
+          rating: json['Rating'] ?? 0,
           account: AccountModel(
             idAccount: json['ID_Account'] ?? 0,
             login: json['Login'] ?? "",
@@ -110,8 +111,9 @@ ORDER BY
             phone: json['Phone'] ?? "",
             mail: json['Mail'] ?? "",
             roleModel: RoleModel(
-                idRoles: json['ID_Roles'] ?? 0,
-                nameRoles: json['Name_Roles'] ?? ""),
+              idRoles: json['ID_Roles'] ?? 0,
+              nameRoles: json['Name_Roles'] ?? "",
+            ),
           ),
         );
 

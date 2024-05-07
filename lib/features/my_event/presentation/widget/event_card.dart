@@ -1,7 +1,5 @@
 import 'package:diplome/features/my_event/data/model/event_participants_model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 class EventCard extends StatefulWidget {
   const EventCard({
@@ -22,10 +20,10 @@ class _EventCardState extends State<EventCard> {
 
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting('ru_RU', null); // Добавьте эту строку
-    final dateFormat = DateFormat('d MMMM y, HH:mm', 'ru_RU');
-    final formattedDate =
-        dateFormat.format(widget.eventParticipantModel.event.dateTime);
+    // initializeDateFormatting('ru_RU', null); // Добавьте эту строку
+    // final dateFormat = DateFormat('d MMMM y, HH:mm', 'ru_RU');
+    // final formattedDate =
+    //     dateFormat.format(widget.eventParticipantModel.event.dateTime);
     return Card(
       child: ExpansionTile(
         trailing: Checkbox(
@@ -39,7 +37,7 @@ class _EventCardState extends State<EventCard> {
         title: Text(
             "Мероприятие: ${widget.eventParticipantModel.event.nameEvents}"),
         subtitle: Text(
-            "Дата и время - ${formattedDate.toString()} ${widget.eventParticipantModel.event.dateTime.isBefore(DateTime.now()) ? "(Просрочено)" : ""}"),
+            "Дата и время - ${widget.eventParticipantModel.event.dateTime}"),
         children: [
           ListTile(
             title: const Text("Index"),
@@ -64,10 +62,8 @@ class _EventCardState extends State<EventCard> {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ...widget.eventParticipantModel.clients
-                    .map((client) => Text(
-                        '${client.firstName} ${client.middleName} ${client.lastName}'))
-                    ,
+                ...widget.eventParticipantModel.clients.map((client) => Text(
+                    '${client.firstName} ${client.middleName} ${client.lastName}')),
               ],
             ),
           ),

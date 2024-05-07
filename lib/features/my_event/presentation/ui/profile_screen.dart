@@ -43,21 +43,21 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             // ФИО
-            Text(""),
-            Text(""),
-            Text(""),
+            const Text(""),
+            const Text(""),
+            const Text(""),
             //  логин
-            Text(""),
+            const Text(""),
             // пароль
-            Text(""),
+            const Text(""),
             // адрес
-            Text(""),
+            const Text(""),
             // телефон
-            Text(""),
+            const Text(""),
             // почта
-            Text(""),
+            const Text(""),
             // роль
-            Text(""),
+            const Text(""),
 
             IconButton(
               onPressed: () {
@@ -71,11 +71,11 @@ class ProfileScreen extends StatelessWidget {
                 WHERE a.ID_Client = '$clientID';
                 """);
               },
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
             ),
             IconButton(
               onPressed: () {},
-              icon: Icon(Icons.save),
+              icon: const Icon(Icons.save),
             ),
           ],
         ),

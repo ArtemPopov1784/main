@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
                 ),
               );
             },
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person),
           ),
         ],
         leading: IconButton(
